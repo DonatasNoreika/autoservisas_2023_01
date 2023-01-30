@@ -107,8 +107,8 @@ class UzsakymoEilute(models.Model):
 
 
 class Komentaras(models.Model):
-    uzsakymas = models.ForeignKey(to="Uzsakymas", verbose_name="Užsakymas", on_delete=models.CASCADE, related_name="komentarai")
-    vartotojas = models.ForeignKey(to=User, verbose_name="Vartotojas", on_delete=models.CASCADE)
+    uzsakymas = models.ForeignKey(to="Uzsakymas", verbose_name="Užsakymas", on_delete=models.CASCADE, null=True, blank=True, related_name="komentarai")
+    vartotojas = models.ForeignKey(to=User, verbose_name="Vartotojas", on_delete=models.CASCADE, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     tekstas = models.TextField(verbose_name="Tekstas", max_length=1000)
 
