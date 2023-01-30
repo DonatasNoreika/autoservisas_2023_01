@@ -35,5 +35,15 @@
     </tr>
     </tbody>
 </table>
-
+<br/>
+<h4>Komentarai:</h4>
+{% if uzsakymas.komentarai.all %}
+{% for komentaras in uzsakymas.komentarai.all %}
+<hr>
+<strong>{{ komentaras.vartotojas }}</strong>, <em>{{ komentaras.date_created }}</em>
+<p>{{ komentaras.tekstas }}</p>
+{% endfor %}
+{% else %}
+    <p>Užsakymas neturi komentarų</p>
+{% endif %}
 {% endblock %}

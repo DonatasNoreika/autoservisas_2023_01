@@ -115,3 +115,4 @@ class Komentaras(models.Model):
     class Meta:
         verbose_name = 'Komentaras'
         verbose_name_plural = 'Komentarai'
+        ordering = ['-date_created']
