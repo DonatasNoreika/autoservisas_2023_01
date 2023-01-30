@@ -6,6 +6,7 @@ from tinymce.models import HTMLField
 
 utc = pytz.UTC
 
+
 # Create your models here.
 class AutomobilioModelis(models.Model):
     marke = models.CharField(verbose_name="Markė", max_length=100)
@@ -34,6 +35,7 @@ class Automobilis(models.Model):
         verbose_name = 'Automobilis'
         verbose_name_plural = 'Automobiliai'
 
+
 class Paslauga(models.Model):
     pavadinimas = models.CharField(verbose_name="Pavadinimas", max_length=100)
     kaina = models.FloatField(verbose_name="Kaina")
@@ -44,6 +46,7 @@ class Paslauga(models.Model):
     class Meta:
         verbose_name = 'Paslauga'
         verbose_name_plural = 'Paslaugos'
+
 
 class Uzsakymas(models.Model):
     data = models.DateTimeField(verbose_name="Data", auto_now_add=True)
@@ -86,6 +89,7 @@ class Uzsakymas(models.Model):
         verbose_name = 'Užsakymas'
         verbose_name_plural = 'Užsakymai'
 
+
 class UzsakymoEilute(models.Model):
     uzsakymas = models.ForeignKey(to="Uzsakymas", on_delete=models.CASCADE, related_name="eilutes")
     paslauga = models.ForeignKey(to="Paslauga", on_delete=models.SET_NULL, null=True)
@@ -100,3 +104,14 @@ class UzsakymoEilute(models.Model):
     class Meta:
         verbose_name = 'Užsakymo eilutė'
         verbose_name_plural = 'Užsakymo eilutės'
+
+
+class Komentaras(models.Model):
+    uzsakymas = models.ForeignKey(to="Uzsakymas", verbose_name="Užsakymas", on_delete=models.CASCADE, related_name="komentarai")
+    vartotojas = models.ForeignKey(to=User, verbose_name="Vartotojas", on_delete=models.CASCADE)
+    date_created = models.DateTimeField(auto_now_add=True)
+    tekstas = models.TextField(verbose_name="Tekstas", max_length=1000)
+
+    class Meta:
+        verbose_name = 'Komentaras'
+        verbose_name_plural = 'Komentarai'

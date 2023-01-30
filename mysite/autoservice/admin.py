@@ -5,7 +5,8 @@ from .models import (Automobilis,
                      AutomobilioModelis,
                      Paslauga,
                      Uzsakymas,
-                     UzsakymoEilute)
+                     UzsakymoEilute,
+                     Komentaras)
 
 
 class UzsakymoEiluteInLine(admin.TabularInline):
@@ -38,3 +39,4 @@ admin.site.register(AutomobilioModelis)
 admin.site.register(Paslauga, PaslaugaAdmin)
 admin.site.register(Uzsakymas, UzsakymasAdmin)
 admin.site.register(UzsakymoEilute, UzsakymoEiluteAdmin)
+admin.site.register(Komentaras)
