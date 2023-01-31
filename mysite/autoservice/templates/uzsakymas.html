@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Užsakymas{% endblock %}
 {% block content %}
+<img class="rounded-circle account-img" src="{{ uzsakymas.vartotojas.profilis.nuotrauka.url }}">
 <h3>Detali užsakymo informacija:</h3>
 <ul>
     <li>Automobilis: <b>{{ uzsakymas.automobilis }}</b></li>
