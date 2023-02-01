@@ -174,3 +174,13 @@ class UserUzsakymasUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.U
     def test_func(self):
         uzsakymas = self.get_object()
         return self.request.user == uzsakymas.vartotojas
+
+class UserUsakymasDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = Uzsakymas
+    success_url = "/autoservice/manouzsakymai/"
+    template_name = "user_uzsakymas_delete.html"
+    context_object_name = "uzsakymas"
+
+    def test_func(self):
+        uzsakymas = self.get_object()
+        return self.request.user == uzsakymas.vartotojas
