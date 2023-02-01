@@ -7,7 +7,7 @@ from django.contrib.auth.forms import User
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from django.views.generic.edit import FormMixin
-from .forms import UzsakymasKomentarasForm, UserUpdateForm, ProfilisUpdateForm
+from .forms import UzsakymasKomentarasForm, UserUpdateForm, ProfilisUpdateForm, UzsakymasCreateUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
@@ -149,9 +149,10 @@ class UzsakymasDetailView(FormMixin, generic.DetailView):
 
 class UzsakymasCreateView(LoginRequiredMixin, generic.CreateView):
     model = Uzsakymas
-    fields = ['terminas', 'automobilis', 'status']
+    # fields = ['terminas', 'automobilis', 'status']
     success_url = "/autoservice/manouzsakymai/"
     template_name = "uzsakymas_form.html"
+    form_class = UzsakymasCreateUpdateForm
 
     def form_valid(self, form):
         form.instance.vartotojas = self.request.user
