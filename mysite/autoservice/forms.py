@@ -23,11 +23,12 @@ class ProfilisUpdateForm(forms.ModelForm):
         model = Profilis
         fields = ['nuotrauka']
 
-# class MyDateInput(forms.DateTimeInput):
-#     input_type = "datetime"
+class MyDateTimeInput(forms.DateTimeInput):
+    input_type = "datetime-local"
 
 class UzsakymasCreateUpdateForm(forms.ModelForm):
     class Meta:
         model = Uzsakymas
         fields = ['terminas', 'automobilis', 'status']
-        widgets = {"terminas": forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'})}
+        # widgets = {"terminas": forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'})}
+        widgets = {"terminas": MyDateTimeInput()}
