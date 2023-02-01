@@ -10,6 +10,11 @@
     <li>Vartotojas: <b>{{ uzsakymas.vartotojas }}</b></li>
     <li>Būsena: <b>{{ uzsakymas.get_status_display }}</b></li>
 </ul>
+{% if uzsakymas.vartotojas == user %}
+<div>
+    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'uzsakymas_redaguoti' uzsakymas.id %}">Redaguoti</a>
+</div>
+{% endif %}
 <hr>
 <h5>Užsakytos paslaugos:</h5>
 <table class="table table-bordered">
