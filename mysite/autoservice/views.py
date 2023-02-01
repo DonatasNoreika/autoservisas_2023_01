@@ -161,9 +161,10 @@ class UzsakymasCreateView(LoginRequiredMixin, generic.CreateView):
 
 class UserUzsakymasUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     model = Uzsakymas
-    fields = ['terminas', 'automobilis', 'status']
+    # fields = ['terminas', 'automobilis', 'status']
     # success_url = "/autoservice/manouzsakymai/"
     template_name = "uzsakymas_form.html"
+    form_class = UzsakymasCreateUpdateForm
 
     def get_success_url(self):
         return reverse("uzsakymas", kwargs={"pk": self.object.id})
