@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.views.generic.edit import FormMixin
 from .forms import UzsakymasKomentarasForm, UserUpdateForm, ProfilisUpdateForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 def index(request):
@@ -45,54 +46,12 @@ def automobilis(request, auto_id):
     return render(request, "automobilis.html", context=context)
 
 
-class UzsakymasListView(generic.ListView):
-    model = Uzsakymas
-    paginate_by = 3
-    template_name = "uzsakymai.html"
-    context_object_name = "uzsakymai"
-
-
-class UzsakymasDetailView(FormMixin, generic.DetailView):
-    model = Uzsakymas
-    template_name = "uzsakymas.html"
-    context_object_name = "uzsakymas"
-    form_class = UzsakymasKomentarasForm
-
-    def get_success_url(self):
-        return reverse('uzsakymas', kwargs={'pk': self.object.id})
-
-    # standartinis post metodo perrašymas, naudojant FormMixin, galite kopijuoti tiesiai į savo projektą.
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
-    def form_valid(self, form):
-        form.instance.uzsakymas = self.object
-        form.instance.vartotojas = self.request.user
-        form.save()
-        return super().form_valid(form)
-
-
 def search(request):
     query = request.GET.get('query')
     search_results = Automobilis.objects.filter(
         Q(klientas__icontains=query) | Q(automobilio_modelis__marke__icontains=query) | Q(automobilio_modelis__modelis__icontains=query) | Q(valstybinis_nr__icontains=query) | Q(
             vin_kodas__icontains=query))
     return render(request, 'search.html', {'automobiliai': search_results, 'query': query})
-
-
-class UserUzsakymasListView(generic.ListView):
-    model = Uzsakymas
-    paginate_by = 3
-    template_name = "user_uzsakymai.html"
-    context_object_name = "uzsakymai"
-
-    def get_queryset(self):
-        return Uzsakymas.objects.filter(vartotojas=self.request.user)
 
 
 @csrf_protect
@@ -124,6 +83,7 @@ def register(request):
             return redirect('register')
     return render(request, 'register.html')
 
+
 @login_required
 def profilis(request):
     if request.method == "POST":
@@ -143,3 +103,56 @@ def profilis(request):
         'p_form': p_form,
     }
     return render(request, 'profilis.html', context)
+
+
+class UzsakymasListView(generic.ListView):
+    model = Uzsakymas
+    paginate_by = 3
+    template_name = "uzsakymai.html"
+    context_object_name = "uzsakymai"
+
+
+class UserUzsakymasListView(generic.ListView):
+    model = Uzsakymas
+    paginate_by = 3
+    template_name = "user_uzsakymai.html"
+    context_object_name = "uzsakymai"
+
+    def get_queryset(self):
+        return Uzsakymas.objects.filter(vartotojas=self.request.user)
+
+
+class UzsakymasDetailView(FormMixin, generic.DetailView):
+    model = Uzsakymas
+    template_name = "uzsakymas.html"
+    context_object_name = "uzsakymas"
+    form_class = UzsakymasKomentarasForm
+
+    def get_success_url(self):
+        return reverse('uzsakymas', kwargs={'pk': self.object.id})
+
+    # standartinis post metodo perrašymas, naudojant FormMixin, galite kopijuoti tiesiai į savo projektą.
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        form.instance.uzsakymas = self.object
+        form.instance.vartotojas = self.request.user
+        form.save()
+        return super().form_valid(form)
+
+class UzsakymasCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Uzsakymas
+    fields = ['terminas', 'automobilis', 'status']
+    success_url = "/autoservice/manouzsakymai/"
+    template_name = "uzsakymas_form.html"
+
+    def form_valid(self, form):
+        form.instance.vartotojas = self.request.user
+        return super().form_valid(form)
+

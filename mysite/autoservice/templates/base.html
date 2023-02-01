@@ -42,7 +42,7 @@
               </a>
             </li>
             <li class="nav-item"><a class="nav-link" href="{% url 'mano_uzsakymai' %}">Mano užsakymai</a></li>
-<!--            <li class="nav-item"><a class="nav-link" href="">Naujas užsakymas</a></li>-->
+            <li class="nav-item"><a class="nav-link" href="{% url 'uzsakymas_sukurti' %}">Naujas užsakymas</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Atsijungti</a></li>
           {% else %}
             <li class="nav-item"><a class="nav-link" href="{% url 'register'%}">Registruotis</a></li>
