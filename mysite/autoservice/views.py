@@ -236,5 +236,3 @@ class UzsakymoEiluteDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.
     def test_func(self):
         uzsakymas = Uzsakymas.objects.get(pk=self.kwargs['uzsakymas_pk'])
         return self.request.user == uzsakymas.vartotojas
-
-
