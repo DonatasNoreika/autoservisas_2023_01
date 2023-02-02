@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from .models import Paslauga, Automobilis, Uzsakymas
+from .models import Paslauga, Automobilis, Uzsakymas, UzsakymoEilute
 from django.views import generic
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -147,6 +147,7 @@ class UzsakymasDetailView(FormMixin, generic.DetailView):
         form.save()
         return super().form_valid(form)
 
+
 class UzsakymasCreateView(LoginRequiredMixin, generic.CreateView):
     model = Uzsakymas
     # fields = ['terminas', 'automobilis', 'status']
@@ -177,6 +178,7 @@ class UserUzsakymasUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.U
         uzsakymas = self.get_object()
         return self.request.user == uzsakymas.vartotojas
 
+
 class UserUsakymasDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
     model = Uzsakymas
     success_url = "/autoservice/manouzsakymai/"
@@ -185,4 +187,22 @@ class UserUsakymasDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.De
 
     def test_func(self):
         uzsakymas = self.get_object()
+        return self.request.user == uzsakymas.vartotojas
+
+
+class UzsakymoEiluteCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
+    model = UzsakymoEilute
+    fields = ['paslauga', 'kiekis']
+    template_name = "uzsakymoeilute_form.html"
+
+    def get_success_url(self):
+        return reverse("uzsakymas", kwargs={"pk": self.kwargs['pk']})
+
+    def form_valid(self, form):
+        form.instance.uzsakymas = Uzsakymas.objects.get(pk=self.kwargs['pk'])
+        form.save()
+        return super().form_valid(form)
+
+    def test_func(self):
+        uzsakymas = Uzsakymas.objects.get(pk=self.kwargs['pk'])
         return self.request.user == uzsakymas.vartotojas
