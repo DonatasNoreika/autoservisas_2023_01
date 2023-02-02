@@ -224,3 +224,17 @@ class UzsakymoEiluteUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.
     def test_func(self):
         uzsakymas = Uzsakymas.objects.get(pk=self.kwargs['uzsakymas_pk'])
         return self.request.user == uzsakymas.vartotojas
+
+class UzsakymoEiluteDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = UzsakymoEilute
+    template_name = "uzsakymoeilute_delete.html"
+    context_object_name = "uzsakymoeilute"
+
+    def get_success_url(self):
+        return reverse("uzsakymas", kwargs={"pk": self.kwargs['uzsakymas_pk']})
+
+    def test_func(self):
+        uzsakymas = Uzsakymas.objects.get(pk=self.kwargs['uzsakymas_pk'])
+        return self.request.user == uzsakymas.vartotojas
+
+
