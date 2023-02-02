@@ -206,3 +206,21 @@ class UzsakymoEiluteCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.
     def test_func(self):
         uzsakymas = Uzsakymas.objects.get(pk=self.kwargs['pk'])
         return self.request.user == uzsakymas.vartotojas
+
+
+class UzsakymoEiluteUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    model = UzsakymoEilute
+    fields = ['paslauga', 'kiekis']
+    template_name = "uzsakymoeilute_form.html"
+
+    def get_success_url(self):
+        return reverse("uzsakymas", kwargs={"pk": self.kwargs['uzsakymas_pk']})
+
+    def form_valid(self, form):
+        form.instance.uzsakymas = Uzsakymas.objects.get(pk=self.kwargs['uzsakymas_pk'])
+        form.save()
+        return super().form_valid(form)
+
+    def test_func(self):
+        uzsakymas = Uzsakymas.objects.get(pk=self.kwargs['uzsakymas_pk'])
+        return self.request.user == uzsakymas.vartotojas
