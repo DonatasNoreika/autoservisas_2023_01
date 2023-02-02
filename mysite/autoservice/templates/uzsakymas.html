@@ -15,9 +15,6 @@
     <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'uzsakymas_redaguoti' uzsakymas.id %}">Redaguoti</a>
     <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'uzsakymas_istrinti' uzsakymas.id %}">Ištrinti</a>
 </div>
-
-
-
 {% endif %}
 <hr>
 <h5>Užsakytos paslaugos:</h5>
@@ -45,9 +42,11 @@
     </tr>
     </tbody>
 </table>
+{% if uzsakymas.vartotojas == user %}
 <div>
     <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'uzsakymas_pridetieilute' uzsakymas.id %}">Pridėti eilutę</a>
 </div>
+{% endif %}
 <br/>
 <h4>Komentarai:</h4>
 {% if user.is_authenticated %}
