@@ -25,7 +25,9 @@
     <th scope="col">Kaina</th>
     <th scope="col">Kiekis</th>
     <th scope="col">Suma</th>
+    {% if uzsakymas.vartotojas == user %}
     <td scope="col"></td>
+    {% endif %}
 </tr>
 </thead>
     <tbody>
@@ -35,14 +37,14 @@
         <td scope="row">{{ eilute.paslauga.kaina }}</td>
         <td scope="row">{{ eilute.kiekis }}</td>
         <td scope="row">{{ eilute.kaina }}</td>
+        {% if uzsakymas.vartotojas == user %}
         <td scope="row">
-            {% if uzsakymas.vartotojas == user %}
             <div>
                 <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'uzsakymas_redaguotieilute' uzsakymas.id eilute.id %}">Redaguoti</a>
                 <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'uzsakymas_istrintieilute' uzsakymas.id eilute.id %}">Ištrinti</a>
             </div>
-            {% endif %}
         </td>
+        {% endif %}
     </tr>
     {% endfor %}
     <tr>
